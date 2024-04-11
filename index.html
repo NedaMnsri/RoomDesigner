@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Room Designer</title>
+    <style>
+        body {
+            font-family :'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #ecf0f1;
+        }
+
+        .header {
+            background: #837d58;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+        }
+
+        .room-planner {
+            width: 80%;
+            height: 600px;
+            position: relative;
+            margin: 20px auto;
+            border: 5px solid #775925;
+            background-size: cover;
+        }
+
+        .furniture {
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            cursor: move;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .furniture:hover {
+            transform: scale(1.1);
+            z-index: 10;
+        }
+
+        #chair {
+            width: 130px;
+            height: 130px;
+            background: url('img/chair.png') no-repeat center center;
+            background-size: contain;
+        }
+
+        #table {
+            width: 250px;
+            height: 250px;
+            background: url('img/table.png') no-repeat center center;
+            background-size: contain;
+        }
+
+        #sofa {
+            width: 350px;
+            height: 350px;
+            background: url('img/sofa.png') no-repeat center center;
+            background-size: contain;
+        }
+
+        #lamp {
+            width: 120px;
+            height: 120px;
+            background: url('img/lamp.png') no-repeat center center;
+            background-size: contain;
+        }
+
+        #TV {
+            width: 250px;
+            height: 250px;
+            background: url('img/tv.png') no-repeat center center;
+            background-size: contain;
+        }
+
+        #chair2 {
+            width: 120px;
+            height: 120px;
+            background: url('img/chair2.png') no-repeat center center;
+            background-size: contain;
+        }
+
+        #stool {
+            width: 150px;
+            height: 150px;
+            background: url('img/stool\ \(1\).png') no-repeat center center;
+            background-size: contain;
+        }
+
+        #tvTable {
+            width: 300px;
+            height: 300px;
+            background: url('img/tvTable.png') no-repeat center center;
+            background-size: contain;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>Adding Furniture to the Room </h1>
+        <p>Drag and drop furniture to design your perfect room.</p>
+    </div>
+
+    <div id="room" class="room-planner">
+        <div id="chair" class="furniture" draggable="true"></div>
+        <div id="table" class="furniture" draggable="true"></div>
+        <div id="sofa" class="furniture" draggable="true"></div>
+        <div id="lamp" class="furniture" draggable="true"></div>
+        <div id="TV" class="furniture" draggable="true"></div>
+        <div id="stool" class="furniture" draggable="true"></div>
+        <div id="chair2" class="furniture" draggable="true"></div>
+        <div id="tvTable" class="furniture" draggable="true"></div>
+    </div>
+
+
+    <script>
+
+        function dragStart(event) {
+            event.dataTransfer.setData("text/plain", event.target.id);
+        }
+
+        function allowDrop(event) {
+            event.preventDefault();
+        }
+
+
+        function drop(event) {
+            event.preventDefault();
+            var data = event.dataTransfer.getData("text");
+            var furniture = document.getElementById(data);
+            var roomRect = document.getElementById('room').getBoundingClientRect();
+            var x = event.clientX - roomRect.left - (furniture.offsetWidth / 2);
+            var y = event.clientY - roomRect.top - (furniture.offsetHeight / 2);
+            furniture.style.left = x + 'px';
+            furniture.style.top = y + 'px';
+        }
+        function deleteFurniture(furnitureId) {
+            var furniture = document.getElementById(furnitureId);
+            if (furniture) {
+                furniture.parentNode.removeChild(furniture);
+            }
+        }
+        var furnitures = document.getElementsByClassName('furniture');
+        for (var i = 0; i < furnitures.length; i++) {
+            furnitures[i].addEventListener('dragstart', dragStart);
+        }
+        document.getElementById('room').addEventListener('dragover', allowDrop);
+        document.getElementById('room').addEventListener('drop', drop);
+    </script>
+
+</body>
+
+</html>
